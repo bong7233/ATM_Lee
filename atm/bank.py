@@ -1,7 +1,7 @@
 class Bank:
     def __init__(self):
         self.accounts = {
-            "card-bong": ["account1", "account2"],
+            "card-bong": ["payroll_account", "nintendo_account"],
         }
 
         self.pins = {
@@ -9,8 +9,8 @@ class Bank:
         }
 
         self.balances = {
-            "account1": 100,
-            "account2": 0,
+            "payroll_account": 500,
+            "nintendo_account": 8000,
         }
 
     
