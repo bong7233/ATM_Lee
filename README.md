@@ -2,11 +2,11 @@
 
 A controller for a simple ATM, implemented as a testable Python library with no UI.  
 Another engineer can build a user interface on top of it.  
-Also, can connect real bank and hardware systems without changing the controller
-  
+
+
 ## Requirements
 
-- python 3.10 or later
+- Python 3.10 or later
 - pytest
 
   
@@ -28,13 +28,13 @@ README.md
 
 ## Setup & Run
 
-1. Clone the repository and enter the folder :
+1. Clone the repository and enter the folder:
     ```
     git clone https://github.com/bong7233/ATM_Lee
     cd ATM_Lee
     ```
-2. Create and activate virtual environment :
-    - window:
+2. Create and activate virtual environment:
+    - Windows:
         ```
         python -m venv venv_atm_bong
         venv_atm_bong\Scripts\activate
@@ -42,7 +42,7 @@ README.md
 
     - Mac / Linux:
         ```
-        python -m venv venv_atm_bong
+        python3 -m venv venv_atm_bong
         source venv_atm_bong/bin/activate
         ```
 
@@ -51,7 +51,7 @@ README.md
     pip install -r requirements.txt
     ```
 
-4. Run te tests:
+4. Run the tests:
     ```
     pytest -v
     ```
@@ -61,14 +61,11 @@ README.md
 
 **Bank**  
 It holds accounts, PINs, balances, and validates PINs (never exposes the PIN itself).
-Balances live in the Bank rather than the controller, can be replaced by a real bank intergration later.  
-
-
+Balances live in the Bank rather than the controller, so it can be replaced by a real bank integration later.  
 
 **CashBin**  
 Represents the physical cash held in the ATM.
-How much cash it holds, whether it can dispense a requested amount, and how to dispense it.  
-  
+It knows how much cash it holds, whether it can dispense a requested amount, and how to dispense it.  
 
 
 **ATMController**  
@@ -82,15 +79,15 @@ The controller receives the **Bank** and **CashBin** through its constructor ins
 ATMController(bank, cash_bin, max_pin_attempts=3)
 ```
 
-This keeps the controller decoupled form concrete implementations. Real systems can be injected later without modifying the controller.  
+This keeps the controller decoupled from concrete implementations. Real systems can be injected later without modifying the controller.  
 
   
 ## State Machine
 
-The controller tracks its state and rejects any operations that is called in the wrong order.
+The controller tracks its state and rejects any operation that is called in the wrong order.
 (withdrawing before authentication)
 ```
-NO_CARD > CARD_INSERTED > AUTHENTICATED > ACCOUNT_SELECTED
+NO_CARD -> CARD_INSERTED -> AUTHENTICATED -> ACCOUNT_SELECTED
 ```  
 
 Ejecting the card resets the state back to **NO_CARD** and clears the session.    
@@ -98,7 +95,7 @@ Ejecting the card resets the state back to **NO_CARD** and clears the session.
 
 ## Tests
 
-The test suite (`tests/test_controller.py`) covers :  
+The test suite (`tests/test_controller.py`) covers:  
 
 - Card insertion (valid and invalid cards)
 - PIN authentication, including the retry limit and card return after too many failures
@@ -109,7 +106,7 @@ The test suite (`tests/test_controller.py`) covers :
 - Rejection of operations called in the wrong state
 - A full end-to-end flow from card insertion to withdrawal  
 
-Ruan all tests with:
+Run all tests with:
 ```
-pytest
+pytest -v
 ```
