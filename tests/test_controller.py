@@ -172,3 +172,14 @@ def test_withdraw_over_cash_bin_limit():
     assert bank.get_account_balance("nintendo_account") == 8000
     assert cash_bin.get_cash() == 500
 
+
+def test_withdraw_before_account_selected():
+    bank = Bank()
+    cash_bin = CashBin(initial_cash=1000)
+    atm = ATMController(bank, cash_bin)
+    atm.insert_card("card-bong")
+    atm.enter_pin("1234")
+    result = atm.withdraw(500)
+
+    assert not result
+
