@@ -197,6 +197,7 @@ def test_eject_card_resets_state():
     assert atm.current_card is None
     assert atm.current_account is None
 
+
 def test_withdraw_towards_nintendo():
     bank = Bank()
     cash_bin = CashBin(initial_cash=10000)
