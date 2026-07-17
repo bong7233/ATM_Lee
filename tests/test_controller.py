@@ -183,3 +183,28 @@ def test_withdraw_before_account_selected():
 
     assert not result
 
+
+def test_eject_card_resets_state():
+    bank = Bank()
+    cash_bin = CashBin()
+    atm = ATMController(bank, cash_bin)
+    atm.insert_card("card-bong")
+    atm.enter_pin("1234")
+    atm.select_account("nintendo_account")
+    atm.eject_card()
+
+    assert atm.state == ATMState.NO_CARD
+    assert atm.current_card is None
+    assert atm.current_account is None
+
+def test_withdraw_towards_nintendo():
+    bank = Bank()
+    cash_bin = CashBin(initial_cash=10000)
+    atm = ATMController(bank, cash_bin)
+
+    assert atm.insert_card("card-bong")
+    assert atm.enter_pin("1234")
+    assert atm.select_account("nintendo_account")
+    assert atm.withdraw(7000)
+    assert bank.get_account_balance("nintendo_account") == 1000
+    assert cash_bin.get_cash() == 3000
