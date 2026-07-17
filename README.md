@@ -53,29 +53,31 @@ README.md
 
 4. Run te tests:
     ```
-    pytest
+    pytest -v
     ```
 
   
 ## Design
-1. **Bank**
-- It holds accounts, PINs, balances, and validates PINs (never exposes the PIN itself)
-- Balances live in the Bank rather than the controller, can be replaced by a real bank intergration later  
+
+**Bank**  
+It holds accounts, PINs, balances, and validates PINs (never exposes the PIN itself).
+Balances live in the Bank rather than the controller, can be replaced by a real bank intergration later.  
 
 
-2. **CashBin**
-- Represents the physical cash held in the ATM
-- How much cash it holds, whether it can dispense a requested amount, and how to dispense it  
+
+**CashBin**  
+Represents the physical cash held in the ATM.
+How much cash it holds, whether it can dispense a requested amount, and how to dispense it.  
   
 
-3. **ATMController**
-- It holds current session state, enforces the correct order of operations and coordinates the Bank and the CashBin  
 
-  
+**ATMController**  
+It holds current session state, enforces the correct order of operations and coordinates the Bank and the CashBin.  
 
-### Dependency Injection
 
-The controller receives the **Bank** and **CashBin** through its constructor instead of creating them itself:
+## Dependency Injection
+
+The controller receives the **Bank** and **CashBin** through its constructor instead of creating them itself:  
 ```python
 ATMController(bank, cash_bin, max_pin_attempts=3)
 ```
@@ -83,20 +85,20 @@ ATMController(bank, cash_bin, max_pin_attempts=3)
 This keeps the controller decoupled form concrete implementations. Real systems can be injected later without modifying the controller.  
 
   
-### State Machine
+## State Machine
 
 The controller tracks its state and rejects any operations that is called in the wrong order.
 (withdrawing before authentication)
 ```
 NO_CARD > CARD_INSERTED > AUTHENTICATED > ACCOUNT_SELECTED
-```
+```  
 
-Ejecting the card resets the state back to **NO_CARD** and clears the session
+Ejecting the card resets the state back to **NO_CARD** and clears the session.    
 
 
-### Tests
+## Tests
 
-The test suite (`tests/test_controller.py`) covers :
+The test suite (`tests/test_controller.py`) covers :  
 
 - Card insertion (valid and invalid cards)
 - PIN authentication, including the retry limit and card return after too many failures
@@ -105,7 +107,7 @@ The test suite (`tests/test_controller.py`) covers :
 - Deposit, including rejection of non-positive amounts
 - Withdrawal, including insufficient balance and insufficient cash in the bin
 - Rejection of operations called in the wrong state
-- A full end-to-end flow from card insertion to withdrawal
+- A full end-to-end flow from card insertion to withdrawal  
 
 Ruan all tests with:
 ```
