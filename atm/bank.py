@@ -9,8 +9,8 @@ class Bank:
         }
 
         self.balances = {
-            "account1": 1000,
-            "account2": 500,
+            "account1": 100,
+            "account2": 0,
         }
 
     
@@ -20,6 +20,8 @@ class Bank:
     def validate_pin(self, card_number, pin):
         return self.pins.get(card_number) == pin
     
+    def validate_account(self, card_number, account):
+        return account in self.accounts.get(card_number, [])
     
     def get_accounts(self, card_number):
         return self.accounts.get(card_number, [])
